@@ -1,0 +1,11 @@
+TALABLAR:
+    userlarni statusi bo'lishi kerak (teacher, student)
+    faqat teacher vazifalar qo'sha oladi.
+    studentlar vazifalarni ko'ra olishadi va ularga javob qoldirishadi yoki comment qoldirishadi.
+    studentga va teacherga bildirishnomal ko'rinishi kerak.
+    quil fileldan foydalanib codelarni chiroyliroq yozish uchun 
+    profile sahifasida oquvchining reytingi, darslar jadvali ko'rinishi kerak
+    teacher har dars so'ngida oquvchilarni baholay olishi kerak.
+    student ham har bir dars haqida fikr yozish kerak va teacherni baholay olishi kerak
+    kun afarizimi qoshish.
+

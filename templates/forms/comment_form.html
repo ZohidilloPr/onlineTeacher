@@ -1,0 +1,18 @@
+<form action="{% url 'write_comment' %}" class="w-100" method="post">
+    {% csrf_token %}
+    {% if user.teacher == True %}
+        <input type="text" hidden value="{{ user.id }}" name="author">
+        <input type="text" hidden value="{{ task.student.id }}" name="to">
+    {% elif user.student == True %}
+        <input type="text" hidden value="{{ user.id }}" name="author">
+        <input type="text" hidden value="{{ task.teacher.id }}" name="to">
+    {% endif %}
+    <input type="text" hidden value="{{ task.id }}" name="task">
+    <div class="form-floating">
+        <textarea class="form-control" name="comments" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+        <label for="floatingTextarea">Comments</label>
+    </div>
+    <div class="buttons mt-3">
+        <input type="submit" value="comment" class="btn btn-sm btn-dark d-block w-100 mt-2">
+    </div>
+</form>

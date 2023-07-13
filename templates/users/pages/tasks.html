@@ -1,0 +1,91 @@
+{% extends "../profile.html" %}
+{% block main %}
+    <style>
+        .main{
+            max-width: 80%;
+            margin: 100px auto;
+        }
+        .teacher_comments p{
+            border-top-right-radius: 10px;
+            border-bottom-left-radius: 10px;
+        }
+        .student_comments p{
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+        }
+        .teacher_comments p, .student_comments p{
+            padding: 8px;
+            display: block;
+            background: #ddd;
+            margin-bottom: 20px;
+            border-top-left-radius: 10px;
+        }
+    </style>
+    <div class="main">
+        <div class="accordion" id="accordionExample">
+                {% for task in tasks %}
+                    <div class="accordion-item text-bg-light mb-4 border">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed text-bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{task.id}}" aria-expanded="false" aria-controls="flush-collapseOne">
+                                <div class="w-100 pe-3 d-flex justify-content-between">
+                                    <span class="d-block">
+                                        {{ task.title | title | truncatechars:90 }}
+                                    </span>
+                                    {% if task.complite %} 
+                                        <span class="ps-3" style="color: darkcyan;">
+                                            <i class="fa fa-check-square" aria-hidden="true"></i> 
+                                            complited 
+                                        </span> 
+                                    {% else %} 
+                                        <span class="d-block p-1">
+                                            {{ task.complite_time }}
+                                        </span> 
+                                    {% endif %}
+                                </div>
+                            </button>
+                        </h2>
+                        <div id="flush-collapse{{task.id}}" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <div class="btn_ text-end">
+                                    <button class="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#staticBackdrop{{ task.id }}">Izoh yozish</button>
+                                    <a class="btn btn-sm btn-primary" href="{% url 'send_answer' id=task.id %}">Javob yollash</a>
+                                </div>
+                                <p>{{ task.description.html|safe }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Modal -->
+                    <div class="modal fade" id="staticBackdrop{{ task.id }}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="staticBackdropLabel">Izoh qoldirish</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    {% for comment in task.get_comments %} 
+                                        {% if comment.author.student == True %}  
+                                            <div class="comments_list d-flex justify-content-end">
+                                                <div class="student_comments w-50">
+                                                    <p class="">{{ comment.comment }}</p>
+                                                </div>
+                                            </div>
+                                        {% elif comment.author.teacher == True %}
+                                            <div class="comments_list ">
+                                                <div class="teacher_comments w-50">
+                                                    <p class="">{{ comment.comment }}</p>
+                                                </div>
+                                            </div>
+                                        {% endif %}
+                                    {% endfor %}  
+                                </div>
+                                <div class="modal-footer">
+                                    {% include "../../forms/comment_form.html" %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>    
+    </div>
+{% endblock main %}
