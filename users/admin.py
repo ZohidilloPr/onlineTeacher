@@ -1,5 +1,5 @@
-from .models import CustomUser
 from django.contrib import admin
+from .models import CustomUser, StudentsGroup
 from django.contrib.auth.admin import UserAdmin
 # Register your models here.
 
@@ -39,3 +39,12 @@ class CustomUserAdmin(UserAdmin):
 
 
     )
+
+
+@admin.register(StudentsGroup)
+class StudentsGroupAdmin(admin.ModelAdmin):
+    search_fields = ["name"]
+    filter_horizontal = ["students"]
+    list_display_links = ["name"]
+    list_filter = ["teacher", "add_time"]
+    list_display = ["id", "name", "teacher", "add_time", "update_time"]
