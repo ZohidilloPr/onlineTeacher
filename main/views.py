@@ -1,5 +1,6 @@
 from datetime import datetime
 from django.utils import timezone
+from users.models import StudentsGroup
 from .forms import QuilEditor, TasksForm
 from django.shortcuts import redirect, render
 from django.contrib.auth import get_user_model
@@ -12,13 +13,15 @@ User = get_user_model()
 
 def TasksList(request):
     """ BUGINGI VAZIFALARNI KO'RISH UCHUN """
+    group = StudentsGroup.objects.filter(students=request.user).first()
+    print(Tasks.objects.filter(active=True, add_time__day=today, student=group.id))
     if request.user.is_superuser:
-        tasks = Tasks.objects.filter(active=True, add_time__day=today).all()
+        tasks = Tasks.objects.filter(active=True, add_time__day=today)
     elif request.user.teacher:
-        tasks = Tasks.objects.filter(active=True, add_time__day=today, teacher=request.user).all()
+        tasks = Tasks.objects.filter(active=True, add_time__day=today, teacher=request.user)
     elif request.user.student:
-        tasks = Tasks.objects.filter(active=True, add_time__day=today, student=request.user).all()
-    else:
+        tasks = Tasks.objects.filter(active=True, add_time__day=today, student=group.id)
+    else:    
         tasks = []
     return render(request, "users/pages/tasks.html", {"tasks": tasks})
 
@@ -46,7 +49,8 @@ def WriteComment(request):
 
 def NoComplitedTasks(request):
     """ TUGALLANMAGAN VAZIFALAR """
-    tasks = Tasks.objects.filter(complite=False, student=request.user).order_by("-add_time")
+    group = StudentsGroup.objects.filter(students=request.user).first()
+    tasks = Tasks.objects.filter(complite=False, student__in=group.students.all()).order_by("-add_time")
     return render(request, "users/pages/no_compited_tasks.html", {"tasks": tasks})
 
 

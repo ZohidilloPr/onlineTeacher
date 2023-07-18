@@ -44,7 +44,7 @@ class CustomUserAdmin(UserAdmin):
 @admin.register(StudentsGroup)
 class StudentsGroupAdmin(admin.ModelAdmin):
     search_fields = ["name"]
-    filter_horizontal = ["students"]
     list_display_links = ["name"]
+    filter_horizontal = ["students"]
     list_filter = ["teacher", "add_time"]
     list_display = ["id", "name", "teacher", "add_time", "update_time"]

@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from users.models import StudentsGroup
 from django_quill.fields import QuillField
 from django.contrib.auth import get_user_model
 
@@ -10,7 +11,7 @@ User = get_user_model()
 class Tasks(models.Model):
     """ VAZIFALAR UCHUN MODEL """
     teacher = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name="O'qituvchi", related_name="teachers")
-    student = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name="Talaba", related_name="students")
+    student = models.ForeignKey(StudentsGroup, on_delete=models.SET_NULL, null=True, verbose_name="Gurux nomi", related_name="students_group")
     title = models.CharField(max_length=500, verbose_name="Vazifa mavzusi")
     description = QuillField(verbose_name="Tafsiloti")
     complite = models.BooleanField(default=False, verbose_name="Bitdi")
